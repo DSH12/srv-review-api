@@ -14,7 +14,8 @@ const (
 )
 
 type Review struct {
-	ID uint64
+	ID  uint64 `db:"id"`
+	Foo uint64 `db:"foo"`
 }
 
 type ReviewEvent struct {

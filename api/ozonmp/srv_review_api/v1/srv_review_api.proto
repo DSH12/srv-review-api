@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package ozonmp.srv_review_api.v1;
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/ozonmp/srv-review-api/pkg/srv-review-api;srv_review_api";
+
+// SrvReviewApiService - Service for working with reviews
+service SrvReviewApiService {
+  // DescribeReviewV1 - Describe a review
+  rpc DescribeReviewV1(DescribeReviewV1Request) returns (DescribeReviewV1Response) {
+    option (google.api.http) = {
+      get: "/v1/reviews/{review_id}"
+    };
+  }
+}
+
+message Review {
+  uint64 id  = 1;
+  uint64 foo = 2;
+  google.protobuf.Timestamp created = 3;
+}
+
+message DescribeReviewV1Request {
+  uint64 review_id = 1 [(validate.rules).uint64.gt = 0];
+}
+
+message DescribeReviewV1Response {
+  Review value = 1;
+}

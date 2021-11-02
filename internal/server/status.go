@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"sync/atomic"
 
-	"github.com/ozonmp/omp-template-api/internal/config"
+	"github.com/ozonmp/srv-review-api/internal/config"
 	"github.com/rs/zerolog/log"
 )
 
