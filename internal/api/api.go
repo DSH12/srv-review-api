@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
@@ -32,37 +31,26 @@ func NewReviewAPI(r repo.Repo) pb.SrvReviewApiServiceServer {
 	return &reviewAPI{repo: r}
 }
 
-func (o *reviewAPI) DescribeReviewV1(
-	ctx context.Context,
-	req *pb.DescribeReviewV1Request,
+func (o *reviewAPI) DescribeReviewV1(ctx context.Context, req *pb.DescribeReviewV1Request,
 ) (*pb.DescribeReviewV1Response, error) {
+	log.Debug().Msg("Describe: " + req.String())
+	return nil, status.Error(codes.Unimplemented, "Describe not implemented")
+}
 
-	if err := req.Validate(); err != nil {
-		log.Error().Err(err).Msg("DescribeReviewV1 - invalid argument")
+func (o *reviewAPI) CreateReviewV1(ctx context.Context, req *pb.CreateReviewV1Request,
+) (*pb.CreateReviewV1Response, error) {
+	log.Debug().Msg("Create: " + req.String())
+	return nil, status.Error(codes.Unimplemented, "Create not implemented")
+}
 
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
+func (o *reviewAPI) ListReviewV1(ctx context.Context, req *pb.ListReviewV1Request,
+) (*pb.ListReviewV1Response, error) {
+	log.Debug().Msg("List: " + req.String())
+	return nil, status.Error(codes.Unimplemented, "List not implemented")
 
-	review, err := o.repo.DescribeReview(ctx, req.ReviewId)
-	if err != nil {
-		log.Error().Err(err).Msg("DescribeReviewV1 -- failed")
-
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
-	if review == nil {
-		log.Debug().Uint64("reviewId", req.ReviewId).Msg("review not found")
-		totalReviewNotFound.Inc()
-
-		return nil, status.Error(codes.NotFound, "review not found")
-	}
-
-	log.Debug().Msg("DescribeReviewV1 - success")
-
-	return &pb.DescribeReviewV1Response{
-		Value: &pb.Review{
-			Id:  review.ID,
-			Foo: review.Foo,
-		},
-	}, nil
+}
+func (o *reviewAPI) RemoveReviewV1(ctx context.Context, req *pb.RemoveReviewV1Request,
+) (*pb.RemoveReviewV1Response, error) {
+	log.Debug().Msg("Remove: " + req.String())
+	return nil, status.Error(codes.Unimplemented, "Remove not implemented")
 }

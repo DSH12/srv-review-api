@@ -16,12 +16,44 @@ service SrvReviewApiService {
       get: "/v1/reviews/{review_id}"
     };
   }
+  rpc CreateReviewV1(CreateReviewV1Request) returns (CreateReviewV1Response) {
+    option (google.api.http) = {
+      post: "/v1/review"
+      body: "*"
+    };
+  }
+  rpc ListReviewV1(ListReviewV1Request) returns (ListReviewV1Response) {
+    option (google.api.http) = {
+      post: "/v1/reviews"
+      body: "*"
+    };
+  }
+  rpc RemoveReviewV1(RemoveReviewV1Request) returns (RemoveReviewV1Response) {
+    option (google.api.http) = {
+      delete: "/v1/reviews/{review_id}"
+    };
+  }
+
 }
 
 message Review {
   uint64 id  = 1;
-  uint64 foo = 2;
-  google.protobuf.Timestamp created = 3;
+  uint64 author_id = 2;
+  string text = 3;
+  uint32 score = 4;
+  google.protobuf.Timestamp created = 5;
+}
+
+
+message CreateReviewV1Request {
+  uint64 author_id = 1 [(validate.rules).uint64.gt = 0];
+  string text = 2;
+  uint32 score = 3 [(validate.rules).uint32.gte = 0];
+  google.protobuf.Timestamp created = 4 [(validate.rules).timestamp.required = true];
+}
+
+message CreateReviewV1Response {
+  uint64 review_id = 1;
 }
 
 message DescribeReviewV1Request {
@@ -29,5 +61,23 @@ message DescribeReviewV1Request {
 }
 
 message DescribeReviewV1Response {
-  Review value = 1;
+  Review review = 1;
 }
+
+message ListReviewV1Request {
+  uint64 from = 1 [(validate.rules).uint64.gt = 0];
+  uint64 limit = 2 [(validate.rules).uint64.gt = 0];
+}
+
+message ListReviewV1Response {
+  repeated Review items = 1;
+}
+
+message RemoveReviewV1Request {
+    uint64 review_id = 1 [(validate.rules).uint64.gt = 0];
+}
+
+message RemoveReviewV1Response {
+  bool found = 1;
+}
+
